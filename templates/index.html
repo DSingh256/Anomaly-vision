@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- ── Hero ──────────────────────────────────────── -->
+<section class="hero">
+    <div class="hero-badge">
+        <span class="pulse-dot"></span>
+        Powered by Anomalib &amp; PatchCore
+    </div>
+    <h1>
+        Detect Manufacturing<br>
+        <span class="gradient-text">Defects with AI</span>
+    </h1>
+    <p>
+        Train state-of-the-art anomaly detection models on your own industrial images,
+        then run real-time inference to identify defective parts — all from a single dashboard.
+    </p>
+    <div class="hero-actions">
+        <a href="/train" class="btn btn-primary btn-lg">
+            🧠&ensp;Start Training
+        </a>
+        <a href="/inference" class="btn btn-secondary btn-lg">
+            🔍&ensp;Run Inference
+        </a>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Features ──────────────────────────────────── -->
+<section>
+    <div class="section-heading">
+        <h2>What You Can Do</h2>
+        <p>An end-to-end pipeline from training to production-grade inspection.</p>
+    </div>
+
+    <div class="features-grid stagger">
+        <div class="glass-card">
+            <div class="feature-icon">📦</div>
+            <h3>Upload &amp; Train</h3>
+            <p>Zip your defect-free images, choose a model backbone, and launch training in one click. We handle the rest.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Multiple Backends</h3>
+            <p>Run inference with PyTorch, ONNX Runtime, or OpenVINO for the best balance of speed and accuracy.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon">🔬</div>
+            <h3>Rich Visual Output</h3>
+            <p>Get heatmaps, segmentation masks, and anomaly scores for every inspected image — instant visual feedback.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon">🏭</div>
+            <h3>Industry Ready</h3>
+            <p>Built on MVTec AD benchmarks achieving 99.6% AUROC. Deploy with Docker for production workloads.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon">🧩</div>
+            <h3>Model Zoo</h3>
+            <p>PatchCore, PaDiM, FastFlow, EfficientAD, and more — swap models without changing your pipeline.</p>
+        </div>
+        <div class="glass-card">
+            <div class="feature-icon">📊</div>
+            <h3>Benchmarking</h3>
+            <p>Compare FPS, latency percentiles, and accuracy across PyTorch, ONNX, and OpenVINO side by side.</p>
+        </div>
+    </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Pipeline Flow ─────────────────────────────── -->
+<section>
+    <div class="section-heading">
+        <h2>Pipeline Flow</h2>
+        <p>From raw images to actionable defect maps in three simple steps.</p>
+    </div>
+
+    <div class="stats-row stagger">
+        <div class="stat-card">
+            <div class="stat-value">01</div>
+            <div class="stat-label">Upload Dataset</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">02</div>
+            <div class="stat-label">Train Model</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">03</div>
+            <div class="stat-label">Run Inference</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">04</div>
+            <div class="stat-label">View Results</div>
+        </div>
+    </div>
+</section>
+{% endblock %}

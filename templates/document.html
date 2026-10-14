@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% block title %}Documentation{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding-bottom: 40px;">
+    <h1><span class="gradient-text">Documentation</span></h1>
+    <p>Learn about the dataset, the underlying research, and how to set up your own deployment.</p>
+</section>
+
+<div class="page-grid single">
+    <!-- ── MVTec AD Dataset ──────────────────────── -->
+    <div class="doc-section">
+        <div class="glass-card mb-3">
+            <h3>🗃️&ensp;MVTec AD Dataset</h3>
+            <p>
+                MVTec AD is the benchmark for industrial anomaly detection. It contains over 5,000
+                high-resolution images across 15 object and texture categories. Each category
+                includes defect-free training images and a test set with various defect types
+                plus defect-free baselines.
+            </p>
+            <img src="/static/mvtec_dataset.jpg" alt="MVTec AD dataset overview" class="doc-img" style="width: 100%;">
+            <div class="mt-2">
+                <a href="https://www.mvtec.com/company/research/datasets/mvtec-ad" target="_blank" class="btn btn-secondary">
+                    ↗&ensp;MVTec AD Dataset
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PatchCore Paper ───────────────────────── -->
+    <div class="doc-section">
+        <div class="glass-card mb-3">
+            <h3>📝&ensp;PatchCore Paper</h3>
+            <p>
+                <strong>PatchCore</strong> addresses the cold-start problem in manufacturing defect
+                detection: training only on nominal (defect-free) images. It builds a maximally
+                representative memory bank of patch features from a pre-trained ImageNet backbone,
+                then measures test-time patch distances to detect and localise anomalies.
+            </p>
+            <div class="info-box mt-2">
+                <h4>📊 Key Result</h4>
+                <p>On MVTec AD, PatchCore achieves <strong>99.6% image-level AUROC</strong>, more than
+                halving the error rate of the next-best method at the time of publication.</p>
+            </div>
+            <div class="mt-2">
+                <a href="https://arxiv.org/abs/2106.08265" target="_blank" class="btn btn-secondary">
+                    ↗&ensp;Read the Paper (arXiv)
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── Supported Models ──────────────────────── -->
+    <div class="doc-section">
+        <div class="glass-card mb-3">
+            <h3>🧩&ensp;Supported Models</h3>
+            <p>This pipeline supports all models available in Anomalib. Popular choices include:</p>
+            <div class="stats-row mt-2">
+                <div class="stat-card">
+                    <div class="stat-value" style="font-size: 1.1rem;">PatchCore</div>
+                    <div class="stat-label">Memory bank</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="font-size: 1.1rem;">PaDiM</div>
+                    <div class="stat-label">Gaussian</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="font-size: 1.1rem;">FastFlow</div>
+                    <div class="stat-label">Normalising flow</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" style="font-size: 1.1rem;">EfficientAD</div>
+                    <div class="stat-label">Knowledge distillation</div>
+                </div>
+            </div>
+            <img src="/static/models_supported.jpg" alt="Supported models overview" class="doc-img mt-2" style="width: 100%;">
+        </div>
+    </div>
+
+    <!-- ── Deployment ────────────────────────────── -->
+    <div class="doc-section">
+        <div class="glass-card mb-3">
+            <h3>🚀&ensp;Deployment</h3>
+            <p>The application ships with a Dockerfile and docker-compose for one-command deployment.</p>
+            <div class="info-box mt-2">
+                <h4>🐳 Quick Start</h4>
+                <ul>
+                    <li><code>docker-compose up --build</code> — build &amp; run the full stack</li>
+                    <li>Access the dashboard at <code>http://localhost:8000</code></li>
+                    <li>Models are persisted in the <code>models/</code> volume</li>
+                </ul>
+            </div>
+            <div class="mt-2" style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="https://github.com/vnk8071/anomaly-detection-in-industry-manufacturing" target="_blank" class="btn btn-secondary">
+                    ↗&ensp;GitHub Repository
+                </a>
+                <a href="https://anomalib.readthedocs.io/en/latest/" target="_blank" class="btn btn-secondary">
+                    ↗&ensp;Anomalib Docs
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ── CTA ────────────────────────────────────────── -->
+<div class="text-center mb-4">
+    <a href="/train" class="btn btn-primary btn-lg">
+        🧠&ensp;Start Building Your Model
+    </a>
+</div>
+{% endblock %}

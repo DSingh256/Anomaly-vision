@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Inference Result{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding-bottom: 32px;">
+    <h1>Inspection <span class="gradient-text">Results</span></h1>
+</section>
+
+<!-- ── Score & Label ─────────────────────────────── -->
+<div class="text-center mb-4 stagger">
+    <div class="score-badge {{ 'anomalous' if target == 'Anomalous' else 'normal' }}" style="margin-bottom: 12px;">
+        {{ '🔴' if target == 'Anomalous' else '🟢' }}
+        {{ target }}
+    </div>
+    <div style="margin-top: 8px;">
+        <span style="color: var(--text-muted); font-size: .85rem; text-transform: uppercase; letter-spacing: .05em;">Anomaly Score</span>
+        <div style="font-family: var(--font-mono); font-size: 2rem; font-weight: 800; color: var(--text-primary); margin-top: 4px;">
+            {{ '%.4f' % anomaly_score }}
+        </div>
+    </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ── Result Images ─────────────────────────────── -->
+<div class="result-grid stagger">
+    <div class="result-image-card">
+        <img src="/{{ image_upload }}" alt="Uploaded input image">
+        <div class="result-label">📷&ensp;Input Image</div>
+    </div>
+    <div class="result-image-card">
+        <img src="/{{ heatmap_predict }}" alt="Anomaly heatmap">
+        <div class="result-label">🌡️&ensp;Heatmap</div>
+    </div>
+    <div class="result-image-card">
+        <img src="/{{ mask_predict }}" alt="Prediction mask">
+        <div class="result-label">🎭&ensp;Prediction Mask</div>
+    </div>
+    <div class="result-image-card">
+        <img src="/{{ segment_predict }}" alt="Segmentation overlay">
+        <div class="result-label">🔬&ensp;Segmentation</div>
+    </div>
+</div>
+
+<!-- ── Actions ────────────────────────────────────── -->
+<div class="text-center mt-3 mb-4">
+    <a href="/inference" class="btn btn-primary btn-lg">
+        🔍&ensp;Inspect Another Image
+    </a>
+</div>
+{% endblock %}

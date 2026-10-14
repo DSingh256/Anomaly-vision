@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% block title %}Inference{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding-bottom: 40px;">
+    <h1>Run <span class="gradient-text">Inference</span></h1>
+    <p>Upload an image and select a trained model to detect anomalies. Get instant heatmaps, masks, and anomaly scores.</p>
+</section>
+
+<!-- ── Flash Message ─────────────────────────────── -->
+{% if message %}
+<div class="alert alert-error">
+    <span class="alert-icon">⚠️</span>
+    <div>{{ message }}</div>
+</div>
+{% endif %}
+
+<div class="page-grid">
+    <!-- ── Left: Inference Form ──────────────────── -->
+    <div class="glass-card">
+        <h3>🔍&ensp;Anomaly Inspection</h3>
+        <form method="post" enctype="multipart/form-data" action="/inference" id="inferForm">
+            <!-- Image Upload -->
+            <div class="form-group mt-3">
+                <label for="image_input">Test Image</label>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-icon">🖼️</div>
+                    <p id="dropZoneText">Drop your image here or click to browse</p>
+                    <div class="hint">Accepts .jpg, .jpeg, .png</div>
+                    <input class="form-control" name="image_input" type="file" id="image_input" accept=".jpg,.jpeg,.png">
+                </div>
+
+                <!-- Image preview -->
+                <div id="imagePreview" style="display: none; margin-top: 16px; text-align: center;">
+                    <img id="previewImg" src="" alt="Preview" style="max-height: 260px; border-radius: var(--radius-md); border: 1px solid var(--glass-border);">
+                </div>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="form-group">
+                <label for="user_category">Trained Model</label>
+                {% if user_select %}
+                <select class="form-control" name="user_category" id="user_category">
+                    {% for item in user_select %}
+                    <option value="{{ item }}">{{ item }}</option>
+                    {% endfor %}
+                </select>
+                <div class="hint mt-1" style="color: var(--text-muted); font-size: .8rem;">Format: model_backbone_category</div>
+                {% else %}
+                <div class="info-box">
+                    <h4>⚠️ No models found</h4>
+                    <p>Train a model first before running inference.</p>
+                    <a href="/train" class="btn btn-primary mt-2">🧠&ensp;Go to Training</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Submit -->
+            {% if user_select %}
+            <button class="btn btn-primary btn-block btn-lg mt-2" type="submit" id="inferBtn">
+                ⚡&ensp;Detect Anomalies
+            </button>
+            {% endif %}
+
+            <!-- Progress -->
+            <div class="progress-track mt-2" id="progressTrack" style="display: none;">
+                <div class="progress-fill indeterminate" id="progressFill"></div>
+            </div>
+            <p class="text-center mt-1" id="progressMsg" style="display: none; color: var(--text-muted); font-size: .85rem;">
+                Analyzing image…
+            </p>
+        </form>
+    </div>
+
+    <!-- ── Right: Sample Images ──────────────────── -->
+    <div>
+        <div class="glass-card">
+            <h3>🧪&ensp;Sample Images</h3>
+            <p style="color: var(--text-secondary); margin-bottom: 20px;">
+                Save any sample below and use it as input to test your models.
+            </p>
+            <div class="samples-grid">
+                <div class="sample-card">
+                    <img src="/static/metalnut.png" alt="Metal nut sample">
+                    <div class="sample-label">Metal Nut</div>
+                </div>
+                <div class="sample-card">
+                    <img src="/static/grid.png" alt="Grid sample">
+                    <div class="sample-label">Grid</div>
+                </div>
+                <div class="sample-card">
+                    <img src="/static/hazelnut.png" alt="Hazelnut sample">
+                    <div class="sample-label">Hazelnut</div>
+                </div>
+                <div class="sample-card">
+                    <img src="/static/aqa.png" alt="AQA sample">
+                    <div class="sample-label">AQA</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Drop zone interaction
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('image_input');
+    const dropZoneText = document.getElementById('dropZoneText');
+
+    ['dragenter', 'dragover'].forEach(e => {
+        dropZone.addEventListener(e, (ev) => { ev.preventDefault(); dropZone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(e => {
+        dropZone.addEventListener(e, (ev) => { ev.preventDefault(); dropZone.classList.remove('dragover'); });
+    });
+    dropZone.addEventListener('drop', (ev) => {
+        fileInput.files = ev.dataTransfer.files;
+        showPreview(ev.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) showPreview(fileInput.files[0]);
+    });
+
+    function showPreview(file) {
+        dropZoneText.textContent = file.name;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            document.getElementById('previewImg').src = e.target.result;
+            document.getElementById('imagePreview').style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Show progress on submit
+    const form = document.getElementById('inferForm');
+    if (form) {
+        form.addEventListener('submit', function () {
+            const btn = document.getElementById('inferBtn');
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = '⏳&ensp;Analyzing…';
+            }
+            document.getElementById('progressTrack').style.display = 'block';
+            document.getElementById('progressMsg').style.display = 'block';
+        });
+    }
+</script>
+{% endblock %}

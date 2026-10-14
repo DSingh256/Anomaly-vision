@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-powered anomaly detection pipeline for industrial manufacturing quality inspection. Train models and run real-time inference.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/anomaly_detection.css">
+    <link rel="icon" href="/static/anomalib-logo.png" type="image/png">
+    <title>{% block title %}AnomalyVision{% endblock %} · Industrial AI</title>
+</head>
+
+<body>
+    <!-- ── Top Navigation ────────────────────────────── -->
+    <nav class="topnav" id="topnav">
+        <div class="topnav-inner">
+            <a class="topnav-brand" href="/index">
+                <img src="/static/anomalib-logo.png" alt="logo">
+                <span>AnomalyVision</span>
+            </a>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">☰</button>
+            <ul class="topnav-links" id="navLinks">
+                <li><a href="/index" class="{% if active_page == 'home' %}active{% endif %}">
+                    <span class="nav-icon">🏠</span> Home
+                </a></li>
+                <li><a href="/train" class="{% if active_page == 'train' %}active{% endif %}">
+                    <span class="nav-icon">🧠</span> Train
+                </a></li>
+                <li><a href="/inference" class="{% if active_page == 'inference' %}active{% endif %}">
+                    <span class="nav-icon">🔍</span> Inspect
+                </a></li>
+                <li><a href="/document" class="{% if active_page == 'docs' %}active{% endif %}">
+                    <span class="nav-icon">📄</span> Docs
+                </a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- ── Main Content ──────────────────────────────── -->
+    <main class="app-wrapper page-enter">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- ── Footer ────────────────────────────────────── -->
+    <footer class="site-footer">
+        <p>&copy; 2026 <a href="https://github.com/vnk8071" target="_blank">vnk8071</a> · AnomalyVision — Industrial Anomaly Detection Pipeline</p>
+    </footer>
+
+    <!-- ── Mobile Nav Toggle ─────────────────────────── -->
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function () {
+            document.getElementById('navLinks').classList.toggle('open');
+        });
+    </script>
+</body>
+
+</html>

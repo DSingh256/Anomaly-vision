@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}Train Model{% endblock %}
+
+{% block content %}
+<section class="hero" style="padding-bottom: 40px;">
+    <h1>Train a <span class="gradient-text">New Model</span></h1>
+    <p>Upload your dataset, pick a model architecture, and launch training. We'll handle pre-processing, fitting, and checkpoint export.</p>
+</section>
+
+<!-- ── Flash Message ─────────────────────────────── -->
+{% if message %}
+<div class="alert {{ 'alert-success' if success else 'alert-error' }}">
+    <span class="alert-icon">{{ '✅' if success else '⚠️' }}</span>
+    <div>
+        {{ message }}
+        {% if success %}
+        <div class="mt-2">
+            <a href="/inference" class="btn btn-success">🔍&ensp;Go to Inference</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<div class="page-grid">
+    <!-- ── Left: Training Form ───────────────────── -->
+    <div class="glass-card">
+        <h3>🧠&ensp;Training Configuration</h3>
+        <form method="post" enctype="multipart/form-data" action="/train" id="trainForm">
+            <!-- Dataset Upload -->
+            <div class="form-group mt-3">
+                <label for="zip_input">Dataset (ZIP file)</label>
+                <div class="drop-zone" id="dropZone">
+                    <div class="drop-zone-icon">📁</div>
+                    <p id="dropZoneText">Drop your dataset zip here or click to browse</p>
+                    <div class="hint">Accepts .zip files only</div>
+                    <input class="form-control" name="zip_input" type="file" id="zip_input" accept=".zip">
+                </div>
+            </div>
+
+            <!-- Model Selection -->
+            <div class="form-group">
+                <label for="user_model">Model Architecture</label>
+                <select class="form-control" name="user_model" id="user_model">
+                    {% for model in user_models %}
+                    <option value="{{ model }}">{{ model }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Backbone Selection -->
+            <div class="form-group">
+                <label for="user_backbone">Backbone Network</label>
+                <select class="form-control" name="user_backbone" id="user_backbone">
+                    <option value="resnet18" selected>ResNet-18</option>
+                    <option value="resnet50">ResNet-50</option>
+                    <option value="wide_resnet50_2">Wide ResNet-50-2</option>
+                </select>
+            </div>
+
+            <!-- Submit -->
+            <button class="btn btn-primary btn-block btn-lg mt-2" type="submit" id="trainBtn">
+                🚀&ensp;Start Training
+            </button>
+
+            <!-- Progress -->
+            <div class="progress-track mt-2" id="progressTrack" style="display: none;">
+                <div class="progress-fill indeterminate" id="progressFill"></div>
+            </div>
+            <p class="text-center mt-1" id="progressMsg" style="display: none; color: var(--text-muted); font-size: .85rem;">
+                Training in progress… this may take a few minutes.
+            </p>
+        </form>
+    </div>
+
+    <!-- ── Right: Dataset Guide ──────────────────── -->
+    <div>
+        <div class="glass-card mb-3">
+            <h3>📂&ensp;Dataset Structure</h3>
+            <p class="mb-2" style="color: var(--text-secondary);">Your zip file must follow this folder layout:</p>
+            <div class="info-box">
+                <h4>📋 Required Layout</h4>
+                <ul>
+                    <li><code>train/good/</code> or <code>train/normal/</code> — defect-free images</li>
+                    <li><code>test/&lt;defect-name&gt;/</code> — defective test images</li>
+                    <li><code>test/good/</code> — defect-free test images (optional)</li>
+                </ul>
+            </div>
+            <img src="/static/data_structure.jpg" alt="Dataset structure diagram" class="doc-img" style="width: 100%;">
+        </div>
+
+        <div class="glass-card">
+            <h3>⏱&ensp;Time Estimates</h3>
+            <div class="stats-row" style="margin-bottom: 0;">
+                <div class="stat-card">
+                    <div class="stat-value">~30s</div>
+                    <div class="stat-label">50 images</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">~3m</div>
+                    <div class="stat-label">200 images</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Drop zone interaction
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('zip_input');
+    const dropZoneText = document.getElementById('dropZoneText');
+
+    ['dragenter', 'dragover'].forEach(e => {
+        dropZone.addEventListener(e, (ev) => { ev.preventDefault(); dropZone.classList.add('dragover'); });
+    });
+    ['dragleave', 'drop'].forEach(e => {
+        dropZone.addEventListener(e, (ev) => { ev.preventDefault(); dropZone.classList.remove('dragover'); });
+    });
+    dropZone.addEventListener('drop', (ev) => {
+        fileInput.files = ev.dataTransfer.files;
+        dropZoneText.textContent = ev.dataTransfer.files[0].name;
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) dropZoneText.textContent = fileInput.files[0].name;
+    });
+
+    // Show progress on submit
+    document.getElementById('trainForm').addEventListener('submit', function () {
+        document.getElementById('trainBtn').disabled = true;
+        document.getElementById('trainBtn').innerHTML = '⏳&ensp;Training…';
+        document.getElementById('progressTrack').style.display = 'block';
+        document.getElementById('progressMsg').style.display = 'block';
+    });
+</script>
+{% endblock %}

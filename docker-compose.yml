@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  web:
+    image: anomaly:v3
+    container_name: anomaly_v3
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/anomaly/data
+      - ./models:/anomaly/models
+      - ./results:/anomaly/results
+      - ./static/uploads:/anomaly/static/uploads
+    env_file:
+      - .env
+    restart: unless-stopped
